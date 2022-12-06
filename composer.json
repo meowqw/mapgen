@@ -1,0 +1,22 @@
+{
+    "name": "meatqw/mapgen",
+    "description": "Map site generate",
+    "type": "library",
+    "license": "Apache-2.0",
+    "autoload": {
+        "psr-4": {
+            "Meatqw\\Mapgen\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "meatqw",
+            "email": "lexerdxx@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">7.1.3"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
