@@ -19,16 +19,12 @@ class SiteMap
   // пути сохранения файла
   private string $savePath;
 
-  public function __construct($sitesData, $fileType, $savePath = '')
+  // ИСПРАВЛЕНИЕ: Если путь не указан, файл будет создан в той директории откуда запускается скрипт с именем result.тип файла
+  public function __construct($sitesData, $fileType, $savePath = "./")  
   {
     // Не пуст ли массив
-    try {
-      if (count($sitesData) == 0) {
-        throw new ArrayEmpty();
-      }
-    } catch (ArrayEmpty $e) {
-      echo $e->getMessage();
-      die();
+    if (count($sitesData) == 0) {
+      throw new ArrayEmpty();
     };
 
 
@@ -40,26 +36,22 @@ class SiteMap
       sort($keys);
       sort($enteredDataKeys);
 
-      try {
-        if ($enteredDataKeys != $keys) {
-          throw new InValidArrayStructure();
-          break;
-        }
-      } catch (InValidArrayStructure $e) {
-        echo $e->getMessage();
-        die();
-      }
+      if ($enteredDataKeys != $keys) {
+        throw new InValidArrayStructure();
+        break; 
+      };
+        
     }
 
     $this->sitesData = $sitesData;
-    $this->fileType = $fileType;
+    $this->fileType = strtoupper($fileType);  // ИСПРАВЛЕНИЕ: Верхний регистр в switch
     $this->savePath = $savePath;
   }
 
   public function getMap()
   {
     // Вызов метода согласно выбранному типу
-    switch ($this->fileType) {
+    switch ($this->fileType) { 
       case "XML":
         $data = $this->genTypeXML();
         $this->saveFile($data, 'xml');
@@ -74,12 +66,8 @@ class SiteMap
         break;
       default:
         // Невалидный тип выходного файла
-        try {
-          throw new InValidFileType();
-        } catch (InValidFileType $e) {
-          echo $e->getMessage();
-          die();
-        }
+        throw new InValidFileType();
+        
     }
   }
 
@@ -138,34 +126,29 @@ class SiteMap
   */
   public function saveFile($data, $type)
   {
-    // Попытка создание папки
-    if (!file_exists($this->savePath)) {
-      try {
-        if (!mkdir($this->savePath, 0777, true)) {
-          throw new IncorrectSavePath;
-        }
-      } catch (IncorrectSavePath $e) {
-        echo $e->getMessage();
-        die();
-      }
-    }
+    // ИСПРАВЛЕНИЕ: Деление пути на имя и путь для создания директории если она отсутствует
+    // Получение пути к файлу и имени файла 
+    $arrayPath = explode('/', $this->savePath);
+    $fileName = array_pop($arrayPath);
+    $filePath = implode('/', $arrayPath);
 
-    // Добавление / в конце пути если он отсутствует
-    if (substr($this->savePath, -1) != '/') {
-      $this->savePath .= '/';
+    // Попытка создание папки
+    if (!file_exists($filePath)) {
+      if (!mkdir($filePath, 0777, true)) {  // ИСПРАВЛЕНИЕ: Правда доступа
+        throw new IncorrectSavePath;
+      };
+    }
+    
+    // если путь не передан
+    if ($this->savePath == "./") {
+        $fileName = "result.$type";
     }
 
     // Возможно ли сохранить файл
-    try {
-      if (!file_put_contents($this->savePath . 'result.' . $type, $data)) {
-        throw new SaveError;
-      }
-    } catch (SaveError $e) {
-      echo $e->getMessage();
-      die();
+    if (!file_put_contents("$filePath/$fileName", $data)) {
+      throw new SaveError;
     }
-
-
-    echo "File result.$type is saved\n";
+    
+    echo "File $this->savePath is saved\n";
   }
 }

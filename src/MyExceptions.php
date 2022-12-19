@@ -43,3 +43,11 @@ class SaveError extends Exception
         parent::__construct("Ошибка при сохранении");
     }
 }
+
+class FilePathNotFolder extends Exception
+{
+    public function __construct()
+    {
+        parent::__construct("Указанный путь не ведет к папке");
+    }
+}
