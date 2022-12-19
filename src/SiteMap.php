@@ -134,7 +134,7 @@ class SiteMap
 
     // Попытка создание папки
     if (!file_exists($filePath)) {
-      if (!mkdir($filePath, 0777, true)) {  // ИСПРАВЛЕНИЕ: Правда доступа
+      if (!mkdir($filePath, 0644, true)) {  // ИСПРАВЛЕНИЕ: Правда доступа
         throw new IncorrectSavePath;
       };
     }
