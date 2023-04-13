@@ -1,8 +1,6 @@
 <?php
 namespace Meowqw\Mapgen;
 
-include 'MyExceptions.php';
-
 /**
  * Сохранение файла в форматах XML, JSON, XML
  * class MapGeneratorXML
@@ -13,15 +11,16 @@ class FileController
     /**
      * Сохранение файла с картой сайта.
      * 
-     * @param string $type Тип с котором будет сохранен файл.
+     * 
      * @param string $data Сгенерированны данные карты сайта.
+     * @param string $type Тип с котором будет сохранен файл.
      * @param string $path Путь к файлу.
      * 
      * 
      * @throws SaveError Ошибка при сохранении файла.
      * @throws IncorrectSavePath Недопустимый путь.
      */
-    public function save($type, $data, $path)
+    public function save($data, $type, $path)
     {
         // Деление пути на имя и путь для создания директории если она отсутствует
         // Получение пути к файлу и имени файла 

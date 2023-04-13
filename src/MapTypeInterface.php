@@ -8,7 +8,7 @@ namespace Meowqw\Mapgen;
  */
 interface IMapTypeXML
 {
-    public function generateToXML();
+    public function generateToXML($sitesData);
 }
 
 /**
@@ -18,7 +18,7 @@ interface IMapTypeXML
  */
 interface IMapTypeJSON
 {
-    public function generateToJSON();
+    public function generateToJSON($sitesData);
 }
 
 /**
@@ -28,6 +28,6 @@ interface IMapTypeJSON
  */
 interface IMapTypeCSV
 {
-    public function generateToCSV();
+    public function generateToCSV($sitesData);
 }
 ?>

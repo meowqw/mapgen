@@ -6,5 +6,5 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Meatqw\\Mapgen\\' => array($baseDir . '/src'),
+    'Meowqw\\Mapgen\\' => array($baseDir . '/src'),
 );

@@ -20,13 +20,9 @@ class SiteMap
   private string $fileType;
   // пути сохранения файла
   private string $savePath;
-  // сохранение файлов 
-  private $fileController;
-  // генератор карты сайта
-  private $mapGenerator;
 
   // ИСПРАВЛЕНИЕ: Если путь не указан, файл будет создан в той директории откуда запускается скрипт с именем result.тип файла
-  public function __construct($sitesData, $fileType, $savePath = "./", FileController $fileController, MapGenerator $mapGenerator)
+  public function __construct($sitesData, $fileType, $savePath = "./")
   {
     // Не пуст ли массив
     if (count($sitesData) == 0) {
@@ -51,11 +47,6 @@ class SiteMap
     $this->sitesData = $sitesData;
     $this->fileType = strtoupper($fileType); // Верхний регистр в switch
     $this->savePath = $savePath;
-
-    // сохранение
-    $this->fileController = $fileController;
-    // генерация карты (csv, json, csv)
-    $this->mapGenerator = $mapGenerator;
   }
 
   /**
@@ -65,19 +56,25 @@ class SiteMap
    */
   public function getMap()
   {
+
+    // генератор карты
+    $mapGenerator = new MapGenerator;
+    // управление файлами (сохранение)
+    $fileController = new FileController;
+
     // Вызов метода согласно выбранному типу
     switch ($this->fileType) {
       case "XML":
-        $data = $this->mapGenerator->generateToXML($this->sitesData);
-        $this->fileController->save($data, 'xml', $this->savePath);
+        $data = $mapGenerator->generateToXML($this->sitesData);
+        $fileController->save($data, 'xml', $this->savePath);
         break;
       case "CSV":
-        $data = $this->mapGenerator->generateToCSV($this->sitesData);
-        $this->fileController->save($data, 'csv', $this->savePath);
+        $data = $mapGenerator->generateToCSV($this->sitesData);
+        $fileController->save($data, 'csv', $this->savePath);
         break;
       case "JSON":
-        $data = $this->mapGenerator->generateToJSON($this->sitesData);
-        $this->fileController->save($data, 'json', $this->savePath);
+        $data = $mapGenerator->generateToJSON($this->sitesData);
+        $fileController->save($data, 'json', $this->savePath);
         break;
       default:
         throw new InValidFileType(); // исключение: Невалидный тип выходного файла
