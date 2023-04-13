@@ -1,6 +1,6 @@
 <?php
 
-namespace Meatqw\Mapgen;
+namespace Meowqw\Mapgen;
 
 use Exception;
 
